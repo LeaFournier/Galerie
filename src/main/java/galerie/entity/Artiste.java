@@ -27,5 +27,7 @@ public class Artiste extends Personne{
     
     @OneToMany (mappedBy = "auteur") //relation artiste tableau
     private List<Tableau> oeuvres = new LinkedList<>();
-    
+    public List<Tableau> getTableaux(){
+        return oeuvres; 
+    }
 }

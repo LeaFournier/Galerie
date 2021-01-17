@@ -5,6 +5,7 @@
  */
 package galerie.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,13 +19,16 @@ import lombok.*;
 @Getter @Setter @NoArgsConstructor @RequiredArgsConstructor @ToString
 @Entity
 public class Exposition {
+    
+    private float sommeVentes;
+    
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
     
     @Column(unique=false)
     @NonNull
-    private Date dateDebut;
+    private LocalDate dateDebut;
     
     @Column(unique=false)
     @NonNull
@@ -34,7 +38,7 @@ public class Exposition {
     @NonNull
     private int dureeExpo;
 
-    public Exposition(Integer id,Date dateDebut, String intitule, int dureeExpo, Galerie organisateur) {
+    public Exposition(Integer id,LocalDate dateDebut, String intitule, int dureeExpo, Galerie organisateur) {
         this.id = id;
         this.dateDebut = dateDebut;
         this.intitule = intitule;
@@ -50,4 +54,17 @@ public class Exposition {
      
     @OneToMany (mappedBy = "lieuDeVente") //relation transaction
     private List<Transaction> ventes = new LinkedList<>();
+    public List<Transaction> getTransactions(){
+        return ventes;
+    }
+    
+    public float CA(Integer id){
+        this.sommeVentes = 0;
+        for (Transaction v : ventes){
+            if (v.getLieuDeVente().id == id){
+                this.sommeVentes += v.getPrixVente();
+            }
+        }
+        return this.sommeVentes;
+    }
 }

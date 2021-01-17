@@ -11,6 +11,9 @@ import lombok.*;
 @Getter @Setter @NoArgsConstructor @RequiredArgsConstructor @ToString
 @Entity // Une entité JPA
 public class Galerie {
+    
+    private float chiffreAffairesAnnuel;
+    
     @Id  @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Integer id;
 
@@ -32,6 +35,20 @@ public class Galerie {
     // TODO : Mettre en oeuvre la relation oneToMany vers Exposition
      @OneToMany (mappedBy = "organisateur") //relation exposition
     private List<Exposition> evenements = new LinkedList<>();
+     public List<Exposition> getExposition(){
+         return evenements;
+     }
      
+     
+     public float CAannuel(int annee){
+         this.chiffreAffairesAnnuel = 0;
+         for (Exposition e : evenements){
+             if (e.getDateDebut().getYear() == annee){
+                 this.chiffreAffairesAnnuel += e.CA(this.id);
+             }
+         }
+      return this.chiffreAffairesAnnuel;
+     }
+ 
 }
 

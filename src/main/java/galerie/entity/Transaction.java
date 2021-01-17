@@ -6,6 +6,7 @@
 package galerie.entity;
 
 import java.util.Date;
+import java.util.logging.Logger;
 import javax.persistence.*;
 import lombok.*;
 
@@ -50,6 +51,10 @@ public class Transaction {
     
     @ManyToOne //relation exposition
     private Personne client;
+    
+    public Date getVenduLe(){
+        return venduLe;
+    }
     
 }
 

@@ -21,6 +21,8 @@ import lombok.*;
 @ToString
 @Entity
 public class Personne {
+    
+    private float budget;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +42,19 @@ public class Personne {
         this.adresse = adresse;
     }
 
-    @OneToMany (mappedBy = "client") //relation transaction
+    @OneToMany(mappedBy = "client") //relation transaction
     private List<Transaction> achats = new LinkedList<>();
+    public List<Transaction> getTransactions(){
+        return achats;
+    }
+
+    public float budgetAnnuel(int annee) {
+        this.budget = 0;
+        for (Transaction t : achats){
+            if (t.getVenduLe().getYear()== annee && t.getClient().getId() == this.getId()){
+                this.budget += t.getPrixVente();
+            }
+        }
+        return this.budget;
+    }
 }
